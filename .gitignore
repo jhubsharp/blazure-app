@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/Blazure.Web
+/Blazure.Web/.vs/Blazure.Web
+/Blazure.Web/bin/Debug/netstandard2.1
+/Blazure.Web/obj
