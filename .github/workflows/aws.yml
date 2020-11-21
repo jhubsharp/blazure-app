@@ -16,16 +16,32 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env: 
-      DOTNET_NOLOGO: true  
+      DOTNET_NOLOGO: true
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Get source from GitHub
+        uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Build Blazor App
+      - name: Prepare .NET version
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: '3.1.x'
-      - run: dotnet publish -c Release -o release
+  
+      - name: Build and Publish  
+        run: dotnet publish -c Release -o release
+      
+      - name: Deploy to S3
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: release
+          bucket: ${{ secrets.S3_BUCKET }}
+          dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
