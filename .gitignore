@@ -4,5 +4,5 @@
 
 /.vs/Blazure.Web
 /Blazure.Web/.vs/Blazure.Web
-/Blazure.Web/bin/Debug/netstandard2.1
+/Blazure.Web/bin
 /Blazure.Web/obj
